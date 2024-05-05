@@ -21,6 +21,7 @@ fn App() -> impl IntoView {
     let (count, set_count) = create_signal(0);
     let double_count = move || count() * 2;
 
+
     view! {
         <button
             on:click=move |_| {
@@ -43,8 +44,32 @@ fn App() -> impl IntoView {
         <h2>"Dynamic List"</h2>
         <p>"Use this pattern if the rows in your list will change."</p>
         <DynamicList initial_length=5/>
+
         
     }
+}
+
+#[component]
+fn Demo01() -> impl IntoView {
+    let (name, set_name) = create_signal("Controlled".to_string());
+
+    view!
+    {
+        <input type="text"
+         on:input=move |ev| {
+            // event_target_value is a Leptos helper function
+            // it functions the same way as event.target.value
+            // in JavaScript, but smooths out some of the typecasting
+            // necessary to make this work in Rust
+            set_name(event_target_value(&ev));
+        }
+        
+        // the `prop:` syntax lets you update a DOM property,
+        // rather than an attribute.
+        prop:value=name
+    />
+    <p>"Name is: " {name}</p>
+}
 }
 
 #[component]
