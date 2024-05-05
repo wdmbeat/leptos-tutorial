@@ -1,42 +1,11 @@
 use leptos::*;
 
-#[component]
-fn ProgressBar(
-    #[prop(default=100)]
-    max:u16,
-    #[prop(into)]
-    progress: Signal<i32>,
-) -> impl IntoView {
-    view! {
-        <progress
-            max=max
-            // now this works
-            value=progress
-        />
-        <br/>
-    }
-}
+mod progressbar;
+use progressbar::*;
 
 fn App() -> impl IntoView {
-    let (count, set_count) = create_signal(0);
-    let double_count = move || count() * 2;
-
-
     view! {
-        <button
-            on:click=move |_| {
-                // on stable, this is set_count.set(3);
-                set_count.update(|n| *n += 1);
-            }
-            class:red=move || count() % 2 == 1
-        >
-            "click me"
-        </button>
-        <br/>
-        <ProgressBar max=50 progress=count/>
-        <ProgressBar progress=count/>
-        <ProgressBar max=50 progress=Signal::derive(double_count)/>
-
+        <Counter/>
         <h1>"Iteration"</h1>
         <h2>"Static List"</h2>
         <p>"Use this pattern if the list itself is static."</p>
@@ -44,17 +13,36 @@ fn App() -> impl IntoView {
         <h2>"Dynamic List"</h2>
         <p>"Use this pattern if the rows in your list will change."</p>
         <DynamicList initial_length=5/>
+        <h2>"Controlledname"</h2>
+        <Controlledname/>
+        <h2>"Uncontrolledname"</h2>
+        <Uncontrolledname/>
+        <ifflow/>
+    }
+}
+#[component]
+fn ifflow() -> impl IntoView {
+    let (value, _set_value) = create_signal(0);
+    let is_odd = move || value() & 1 == 1;
+    let odd_text = move || if is_odd() { Some("How odd!") } else { None };
 
-        
+    view! {
+
+        <p>
+        {move || if is_odd() {
+            "Odd"
+        } else {
+            "Even"
+        }}
+        </p>
     }
 }
 
 #[component]
-fn Demo01() -> impl IntoView {
+fn Controlledname() -> impl IntoView {
     let (name, set_name) = create_signal("Controlled".to_string());
 
-    view!
-    {
+    view! {
         <input type="text"
          on:input=move |ev| {
             // event_target_value is a Leptos helper function
@@ -63,13 +51,49 @@ fn Demo01() -> impl IntoView {
             // necessary to make this work in Rust
             set_name(event_target_value(&ev));
         }
-        
+
         // the `prop:` syntax lets you update a DOM property,
         // rather than an attribute.
         prop:value=name
     />
     <p>"Name is: " {name}</p>
+      }
 }
+
+#[component]
+fn Uncontrolledname() -> impl IntoView {
+    let (name, set_name) = create_signal("Uncontrolled".to_string());
+
+    let input_element: NodeRef<html::Input> = create_node_ref();
+
+    let on_submit = move |ev: leptos::ev::SubmitEvent| {
+        // stop the page from reloading!
+        ev.prevent_default();
+
+        // here, we'll extract the value from the input
+        let value = input_element()
+            // event handlers can only fire after the view
+            // is mounted to the DOM, so the `NodeRef` will be `Some`
+            .expect("<input> should be mounted")
+            // `leptos::HtmlElement<html::Input>` implements `Deref`
+            // to a `web_sys::HtmlInputElement`.
+            // this means we can call`HtmlInputElement::value()`
+            // to get the current value of the input
+            .value();
+        set_name(value);
+    };
+
+    view! {
+        <form on:submit=on_submit> // on_submit defined below
+        <input type="text"
+            value=name
+            node_ref=input_element
+        />
+        <input type="submit" value="Submit"/>
+        </form>
+        <p>"Name is: " {name}</p>
+
+    }
 }
 
 #[component]
@@ -204,10 +228,7 @@ fn DynamicList(
     }
 }
 
-
 fn main() {
     console_error_panic_hook::set_once();
     leptos::mount_to_body(|| view! { <App/> })
 }
-
-

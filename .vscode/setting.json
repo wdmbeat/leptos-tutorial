@@ -1,32 +1,32 @@
 {
-    "rust-analyzer.procMacro.ignored": {
-      "leptos_macro": [
-        "server"
-      ]
-    },
-    "rust-analyzer.rustfmt.overrideCommand": [
-      "leptosfmt",
-      "--stdin",
-      "--rustfmt"
-    ],
-    "files.associations": {
-      "*.rs": "rust",
-      "*.heex": "phoenix-heex",
-      "*.eex": "phoenix-heex"
-    },
-    "tailwindCSS.includeLanguages": {
-      "rust": "html"
-    },
-    "tailwindCSS.experimental.classRegex": [
-      "class: \"(.*)\""
-    ],
-    "emmet.showAbbreviationSuggestions": true,
-    "emmet.includeLanguages": {
-      "rust": "html"
-    },
-    "editor.quickSuggestions": {
-      "comments": "inline",
-      "strings": "on",
-      "other": "on"
-    }
+  "rust-analyzer.procMacro.ignored": {
+    "leptos_macro": [
+      "server"
+    ]
+  },
+  "rust-analyzer.rustfmt.overrideCommand": [
+    "leptosfmt",
+    "--stdin",
+    "--rustfmt"
+  ],
+  "files.associations": {
+    "*.rs": "rust",
+    "*.heex": "phoenix-heex",
+    "*.eex": "phoenix-heex"
+  },
+  "tailwindCSS.includeLanguages": {
+    "rust": "html"
+  },
+  "tailwindCSS.experimental.classRegex": [
+    "class: \"(.*)\""
+  ],
+  "emmet.showAbbreviationSuggestions": true,
+  "emmet.includeLanguages": {
+    "rust": "html"
+  },
+  "editor.quickSuggestions": {
+    "comments": "inline",
+    "strings": "on",
+    "other": "on"
   }
+}
