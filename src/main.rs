@@ -1,11 +1,18 @@
 use leptos::*;
 
+mod button;
+mod children;
 mod controlflow;
 mod controluncontrol;
+mod errorhandling;
 mod list;
 mod progressbar;
+
+use button::*;
+use children::*;
 use controlflow::*;
 use controluncontrol::*;
+use errorhandling::*;
 use list::*;
 use progressbar::*;
 
@@ -24,6 +31,9 @@ fn App() -> impl IntoView {
         <h2>"Uncontrolledname"</h2>
         <Uncontrolledname/>
         <Controlflow/>
+        <NumericInput/>
+        <Button/>
+        <Children/>
 
     }
 }
