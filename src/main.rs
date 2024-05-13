@@ -4,6 +4,7 @@ mod button;
 mod children;
 mod controlflow;
 mod controluncontrol;
+mod createeffect;
 mod errorhandling;
 mod list;
 mod progressbar;
@@ -12,6 +13,7 @@ use button::*;
 use children::*;
 use controlflow::*;
 use controluncontrol::*;
+use createeffect::*;
 use errorhandling::*;
 use list::*;
 use progressbar::*;
@@ -34,6 +36,7 @@ fn App() -> impl IntoView {
         <NumericInput/>
         <Button/>
         <Children/>
+        <Createeffect/>
 
     }
 }
