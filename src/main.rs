@@ -5,6 +5,7 @@ mod children;
 mod controlflow;
 mod controluncontrol;
 mod createeffect;
+mod demoasync;
 mod errorhandling;
 mod list;
 mod progressbar;
@@ -14,6 +15,7 @@ use children::*;
 use controlflow::*;
 use controluncontrol::*;
 use createeffect::*;
+use demoasync::*;
 use errorhandling::*;
 use list::*;
 use progressbar::*;
@@ -37,6 +39,8 @@ fn App() -> impl IntoView {
         <Button/>
         <Children/>
         <Createeffect/>
+        <Async/>
+
 
     }
 }
