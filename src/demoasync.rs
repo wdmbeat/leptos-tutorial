@@ -9,6 +9,8 @@ pub fn Async() -> impl IntoView {
         <Demo01/>
         <h2>"Demo02"</h2>
         <Demo02/>
+        <h3>"Demo03"</h3>
+        <Demo03/>
     }
 }
 
@@ -82,5 +84,58 @@ pub fn Demo02() -> impl IntoView {
         {move || async_data.get()}
         </p>
         </Suspense>
+    }
+}
+
+async fn important_app_call(id: usize) -> String {
+    TimeoutFuture::new(1_000).await;
+    match id {
+        0 => "Alice",
+        1 => "Bob",
+        2 => "Carol",
+        _ => "User not found",
+    }
+    .to_string()
+}
+#[component]
+pub fn Demo03() -> impl IntoView {
+    let (tab, set_tab) = create_signal(0);
+    let user_data = create_resource(tab, |tab| async move { important_app_call(tab).await });
+
+    view! {
+        <div class="buttons">
+        <button
+        on:click=move |_| set_tab(0)
+        class:select=move || tab() ==0
+        >
+        "Tab A"
+        </button>
+        <button
+        on:click=move |_| set_tab(1)
+        class:select=move || tab() ==1
+        >
+        "Tab B"
+        </button>
+        <button
+        on:click=move |_|set_tab(2)
+        class:select=move || tab() ==2
+        >
+        "Tab C"
+        </button>
+        {move || if user_data.loading().get(){
+            "Loading..."
+        } else {
+            ""
+        }}
+        </div>
+        <Transition
+        fallback=move || view! {
+            <p>"Loading..."
+            </p>
+        }>
+        <p>
+        {move || user_data.get()}
+        </p>
+        </Transition>
     }
 }
